@@ -5,5 +5,7 @@ const pool = new Pool({
     password: "pogiako123",
     host: "localhost",
     port: 5432,
-    database: "eventschduler"
+    database: "eventscheduler"
 });
+
+module.exports = pool;

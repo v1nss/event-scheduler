@@ -6,5 +6,6 @@ CREATE TABLE events(
     event_description TEXT,
     event_start TIME,
     event_end TIME,
-    location VARCHAR(255)
+    location VARCHAR(255),
+    event_cost VARCHAR(50)
 );
