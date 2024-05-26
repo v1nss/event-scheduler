@@ -1,0 +1,33 @@
+.eventItem.warning {
+  background-color: #fff3cd;
+}
+
+.eventItem.staffed {
+  background-color: #d4edda;
+}
+
+.eventItem.new {
+  background-color: #e2e3f3;
+}
+
+.status.warning {
+  color: #ffcc00;
+}
+
+.status.staffed {
+  color: #28a745;
+}
+
+.status.new {
+  color: #6f42c1;
+}
+
+.info-button,
+.edit-button,
+.print-button {
+  margin: 0 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}

@@ -1,0 +1,56 @@
+.event-schedule {
+    padding: 20px;
+  }
+  
+  .event-schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .add-event-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  .status {
+    font-weight: bold;
+  }
+  
+  .status.warning {
+    color: #ffcc00;
+  }
+  
+  .status.staffed {
+    color: #28a745;
+  }
+  
+  .status.new {
+    color: #6f42c1;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+  }
