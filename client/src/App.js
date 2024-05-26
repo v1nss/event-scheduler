@@ -6,7 +6,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <h1>Quickstaff</h1> */}
         <nav>
           <button className="nav-button">EVENTS</button>
           <button className="nav-button">CALENDAR</button>
