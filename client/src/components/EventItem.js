@@ -3,6 +3,18 @@ import './EventItem.css';
 
 const EventItem = () => {
     const [events, setEvents] = useState([]);
+
+    const deleteEvent = async id => {
+        try {
+          const deleteEvent = await fetch(`http:localhost:5000/events/${id}`, {
+            method: "DELETE"
+          });
+
+          setEvents(events.filter(event => event.event_id !== id))
+        } catch (err) {
+          console.error(err.message);
+        }
+    }
     
     const getEvents = async () => {
         try {
@@ -22,7 +34,7 @@ const EventItem = () => {
     console.log(events);
 
   return (
-    <table>
+    <table className='event-table'>
     <thead>
       <tr>
         <th>Event Name</th>
@@ -31,20 +43,23 @@ const EventItem = () => {
         <th>Event End</th>
         <th>Location</th>
         <th>Cost</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {events.map(events => (
-        <tr>
+        <tr key={events.event_id}>
           <td>{events.event_name}</td>
           <td>{events.event_description}</td>
           <td>{events.event_start}</td>
           <td>{events.event_end}</td>
           <td>{events.location}</td>
           <td>{events.event_cost}</td>
-          <button className="info-button">ℹ️</button>
-          <button className="edit-button">✏️</button>
-          <button className="print-button">🖨️</button>
+          <button className="edit-button"/>
+          <button 
+            className="delete-button"
+            onClick={() => deleteEvent(events.event_id)}  
+          />
         </tr>
       ))}
     </tbody>

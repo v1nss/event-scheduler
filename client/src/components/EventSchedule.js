@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './EventSchedule.css';
 import EventItem from './EventItem';
-
+import ShowForm from './ShowForm';
 
 function EventSchedule() {
+
+    const [showForm, setShowForm] = useState(false);
+
+
+
   return (
+    <>
+    
     <div className="event-schedule">
       <div className="event-schedule-header">
         <h2>Event Schedule</h2>
-        <button className="add-event-button">ADD AN EVENT</button>
+        { showForm ? (
+        <ShowForm/>
+        ) : (
+        <button className="add-event-button" 
+            onClick={()=> setShowForm(true)}>
+            ADD AN EVENT
+        </button>
+        )}
       </div>
-        <EventItem/>
+        <div className='eventItem-container'>
+            <EventItem/>
+        </div>
     </div>
+    </>
   );
 }
 

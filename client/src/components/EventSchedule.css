@@ -1,11 +1,21 @@
-.event-schedule {
-    padding: 20px;
+  .eventItem-container{
+    align-self: center;
+    width: 90%;    
+    /* background-color: #6f42c1; */
+  }
+  
+  .event-schedule {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .event-schedule-header {
     display: flex;
     justify-content: space-between;
+    gap: 1390px;
     align-items: center;
+    margin: 1%;
   }
   
   .add-event-button {
