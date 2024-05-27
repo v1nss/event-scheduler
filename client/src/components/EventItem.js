@@ -1,12 +1,17 @@
 import React, { useEffect, useState} from 'react';
-import './EventItem.css';
+import './styles/EventItem.css';
+import EventEdit from './EventEdit';
+import Modal from "./Modal";
 
 const EventItem = () => {
     const [events, setEvents] = useState([]);
+    const [showEditEvent, setShowEditEvent] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+
 
     const deleteEvent = async id => {
         try {
-          const deleteEvent = await fetch(`http:localhost:5000/events/${id}`, {
+          const deleteEvent = await fetch(`http://localhost:5000/events/${id}`, {
             method: "DELETE"
           });
 
@@ -31,39 +36,57 @@ const EventItem = () => {
         getEvents();
     }, []);
 
+    const handleEditClick = (event) => {
+      setSelectedEvent(event);
+      setShowEditEvent(true);
+    };
+
+
     console.log(events);
 
   return (
     <table className='event-table'>
     <thead>
-      <tr>
-        <th>Event Name</th>
-        <th>Description</th>
-        <th>Event Start</th>
-        <th>Event End</th>
-        <th>Location</th>
-        <th>Cost</th>
-        <th></th>
-      </tr>
+        <tr>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Event Start</th>
+            <th>Event End</th>
+            <th>Location</th>
+            <th>Cost</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-      {events.map(events => (
-        <tr key={events.event_id}>
-          <td>{events.event_name}</td>
-          <td>{events.event_description}</td>
-          <td>{events.event_start}</td>
-          <td>{events.event_end}</td>
-          <td>{events.location}</td>
-          <td>{events.event_cost}</td>
-          <button className="edit-button"/>
-          <button 
-            className="delete-button"
-            onClick={() => deleteEvent(events.event_id)}  
-          />
-        </tr>
-      ))}
+        {events.map(event => (
+            <tr key={event.event_id}>
+                <td>{event.event_name}</td>
+                <td>{event.event_description}</td>
+                <td>{event.event_start}</td>
+                <td>{event.event_end}</td>
+                <td>{event.location}</td>
+                <td>₱{event.event_cost}</td>
+                <td>
+                    <button 
+                        className="edit-button" 
+                        onClick={() => handleEditClick(event)}
+                    >
+                    </button>
+                    <button 
+                        className="delete-button" 
+                        onClick={() => deleteEvent(event.event_id)}
+                    >
+                    </button>
+                </td>
+            </tr>
+        ))}
     </tbody>
-  </table>
+    <Modal isOpen={showEditEvent} onClose={() => setShowEditEvent(false)}>
+        {selectedEvent && (
+            <EventEdit onCancel={() => setShowEditEvent(false)} event={selectedEvent} />
+        )}
+    </Modal>
+</table>
   );
 }
 

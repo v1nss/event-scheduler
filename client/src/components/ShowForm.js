@@ -7,11 +7,26 @@ function ShowForm() {
   const [eventEnd, setEventEnd] = useState("");
   const [location, setLocation] = useState("");
   const [eventCost, setEventCost] = useState("");
+  const [error, setError] = useState("");
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
+
+    // Input validation
+    if (!eventName || !eventDescription || !eventStart || !eventEnd || !location || !eventCost) {
+      setError("All fields are required.");
+      return;
+    }
+
     try {
-      const body = { event_name: eventName, event_description: eventDescription, event_start: eventStart, event_end: eventEnd, location, event_cost: eventCost };
+      const body = {
+        event_name: eventName,
+        event_description: eventDescription,
+        event_start: eventStart,
+        event_end: eventEnd,
+        location,
+        event_cost: eventCost,
+      };
       const response = await fetch("http://localhost:5000/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,8 +44,9 @@ function ShowForm() {
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>Create Event</h1>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={onSubmitForm}>
         <div>
           <label>Event Name:</label>
@@ -85,7 +101,6 @@ function ShowForm() {
             onChange={(e) => setEventCost(e.target.value)}
           />
         </div>
-        <button type="button" onClick={() => window.location = "/"}>Cancel</button>
         <button type="submit">Create Event</button>
       </form>
     </div>

@@ -15,22 +15,22 @@
 }
 
 .edit-button {
-  background-image: url('../assets/edit.png');
+  background-image: url('../../assets/edit.png');
   background-repeat: no-repeat;
   background-size: contain;
-  width: 35px; /* Adjust as needed */
-  height: 35px; /* Adjust as needed */
+  width: 35px;
+  height: 35px; 
   margin: 10px;
   /* background-position: left center; */
 }
 
 .delete-button {
-  background-image: url('../assets/delete\ \(1\).png');
+  background-image: url('../../assets/delete\ \(1\).png');
   background-repeat: no-repeat;
   background-size: contain;
   /* background-color: aqua; */
-  width: 35px; /* Adjust as needed */
-  height: 35px; /* Adjust as needed */
+  width: 35px;
+  height: 35px;
   margin: 10px;
 }
 
