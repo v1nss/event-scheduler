@@ -46,8 +46,9 @@ module.exports = {
       },
 
       backgroundImage: {
-        'delete-icon': "url('assets/delete.png')",
-        'edit-icon': "url('assets/edit.png')",
+        'delete-icon': "url('assets/trash-icon.svg')",
+        'edit-icon': "url('assets/edit-icon.svg')",
+        'info-icon': "url('assets/info-icon.svg')",
       },
     },
   },

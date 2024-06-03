@@ -49,8 +49,8 @@ const EventItem = () => {
         } else {
             setIsSearching(true);
         }
-
     }
+    
     useEffect(() => {
         const filtered = events.filter(event =>
           event.event_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -78,27 +78,27 @@ const EventItem = () => {
             </div>
 
         </div>
-        <table className="w-full border-collapse border-none">
+        <table className="w-full table-fixed border-collapse table-fixed">
             <thead className='h-20 sticky top-0 z-10 bg-slate-300'>
-                <tr>
+                <tr className=''>
+                    <th>Company Name</th>
                     <th>Event Name</th>
-                    <th>Description</th>
-                    <th>Event Start</th>
-                    <th>Event End</th>
+                    <th>Start & End</th>
                     <th>Location</th>
-                    <th>Cost</th>
-                    <th></th>
+                    <th>Event Space</th>
+                    {/* <th>Cost</th> */}
+                    <th>More Option</th>
                 </tr>
             </thead>
             {isSearching ? (
                 <tbody>
                 {filteredEvents.map(events => (
-                    <tr key={events.event_id} className='h-20'>
+                    <tr className='border-separate border-spacing-20' key={events.event_id}>
                         <td>{events.event_name}</td>
                         <td>{events.event_description}</td>
-                        <td>{events.event_start}</td>
-                        <td>{events.event_end}</td>
+                        <td>{events.event_start} <br/> {events.event_end}</td>
                         <td>{events.location}</td>
+                        {/* <td>{events.location}</td> */}
                         <td>₱{events.event_cost}</td>
                         <td>
                             <button 
@@ -127,19 +127,19 @@ const EventItem = () => {
             <tbody>
             {events.map(event => (
                 <tr key={event.event_id} className='h-20'>
-                    <td>{event.event_name}</td>
-                    <td>{event.event_description}</td>
-                    <td>{event.event_start}</td>
-                    <td>{event.event_end}</td>
-                    <td>{event.location}</td>
-                    <td>₱{event.event_cost}</td>
+                        <td>{event.event_name}</td>
+                        <td>{event.event_description}</td>
+                        <td>{event.event_start} <br/> {event.event_end}</td>
+                        <td>{event.location}</td>
+                        {/* <td>{event.location}</td> */}
+                        <td>₱{event.event_cost}</td>
                     <td>
-                    <button 
-                            className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-edit-icon"
+                        <button 
+                            className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-info-icon"
                             onClick={() => handleEditClick(event)}
                         >
                         </button>
-                        <button 
+                        <button  
                             className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-edit-icon"
                             onClick={() => handleEditClick(event)}
                         >
