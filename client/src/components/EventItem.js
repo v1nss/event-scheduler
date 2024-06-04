@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import EventEdit from './EventEdit';
+import EventInfo from './EventInfo';
 import Modal from "./Modal";
 
 const EventItem = () => {
@@ -9,6 +10,7 @@ const EventItem = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearching, setIsSearching] = useState(false)
+    const [showInfoEvent, setShowInfoEvent] = useState(false);
 
     const deleteEvent = async id => {
         try {
@@ -41,6 +43,11 @@ const EventItem = () => {
       setSelectedEvent(event);
       setShowEditEvent(true);
     };
+
+    const handleInfoClick = (event) => {
+        setSelectedEvent(event);
+        setShowInfoEvent(true);
+      };
 
     function handleSearch(searchQuery){
         setSearchQuery(searchQuery);
@@ -78,7 +85,7 @@ const EventItem = () => {
             </div>
 
         </div>
-        <table className="w-full table-fixed border-collapse table-fixed">
+        <table className="w-full table-fixed border-collapse">
             <thead className='h-20 sticky top-0 z-10 bg-slate-300'>
                 <tr className=''>
                     <th>Company Name</th>
@@ -102,8 +109,8 @@ const EventItem = () => {
                         <td>₱{events.event_cost}</td>
                         <td>
                             <button 
-                                className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-edit-icon"
-                                onClick={() => handleEditClick(events)}
+                                className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-info-icon"
+                                onClick={() => handleInfoClick(events)}
                             >
                             </button>
                             <button 
@@ -136,7 +143,7 @@ const EventItem = () => {
                     <td>
                         <button 
                             className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-info-icon"
-                            onClick={() => handleEditClick(event)}
+                            onClick={() => handleInfoClick(event)}
                         >
                         </button>
                         <button  
@@ -161,6 +168,11 @@ const EventItem = () => {
             <Modal isOpen={showEditEvent} onClose={() => setShowEditEvent(false)}>
                 {selectedEvent && (
                     <EventEdit onCancel={() => setShowEditEvent(false)} event={selectedEvent} />
+                )}
+            </Modal>
+            <Modal isOpen={showInfoEvent} onClose={() => setShowInfoEvent(false)}> 
+                {selectedEvent && (
+                    <EventInfo onCancel={() => setShowInfoEvent(false)} event={selectedEvent} />
                 )}
             </Modal>
         </table>

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-const EventEdit = ({ event, onCancel }) => {
+
+const EventInfo = ({ event, onCancel}) => {
     const [eventName, setEventName] = useState(event.event_name);
     const [eventDescription, setEventDescription] = useState(event.event_description);
     const [eventStart, setEventStart] = useState(event.event_start);
     const [eventEnd, setEventEnd] = useState(event.event_end);
     const [location, setLocation] = useState(event.location);
     const [eventCost, setEventCost] = useState(event.event_cost);
+
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');
@@ -32,35 +34,15 @@ const EventEdit = ({ event, onCancel }) => {
       setCurrentRequirement('');
     };
 
-    const onSubmitForm = async (e) => {
-        e.preventDefault();
-        try {
-            const body = {
-                event_name: eventName,
-                event_description: eventDescription,
-                event_start: eventStart,
-                event_end: eventEnd,
-                location,
-                event_cost: eventCost
-            };
-            await fetch(`http://localhost:5000/events/${event.event_id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
-            onCancel();
-            window.location = "/"; // Refresh the page after updating
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
+    const onSubmitForm = async (e) =>{
+        
+    }
 
-
-
+    
     return (
         <div className="min-h-80p w-100p flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Event</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Event Info</h1>
         <form onSubmit={onSubmitForm}>
           {eventEditPage === 1 && (
             <>
@@ -380,4 +362,5 @@ const EventEdit = ({ event, onCancel }) => {
     );
 };
 
-export default EventEdit;
+
+export default EventInfo;
