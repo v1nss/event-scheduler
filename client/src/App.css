@@ -17,3 +17,12 @@
   margin: 0 10px;
   cursor: pointer;
 }
+
+.scrollbar-thin {
+  overflow: hidden;
+  padding-right: 8px;
+}
+
+.scrollbar-thin:hover {
+  overflow-y: auto;
+}

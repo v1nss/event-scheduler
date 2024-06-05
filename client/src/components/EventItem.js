@@ -70,7 +70,7 @@ const EventItem = () => {
     
 
   return (
-    <div className=" rounded-lg shadow-lg bg-white w-80p h-70p overflow-auto ">
+    <div className=" rounded-lg shadow-lg bg-white w-80p h-70p overflow-auto scrollbar-thin hover:scrollbar-show">
         <div className='h-20 items-center flex justify-between '>
             <input
                 type="search"
@@ -80,12 +80,14 @@ const EventItem = () => {
                 onChange={(e) => {handleSearch(e.target.value)}}
                 placeholder="Search event"
             />
-            <div className="px-4 h-10 w-20p mx-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500">
-                {/* Dropdown content goes here */}
-            </div>
+            <select className="pl-90p px-4 h-10 w-20p mx-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500">
+                <option>Default</option>
+                <option>Newer</option>
+                <option>Oldest</option>
+            </select>
 
         </div>
-        <table className="w-full table-fixed border-collapse">
+        <table className="w-full table-fixed border-collapse ">
             <thead className='h-20 sticky top-0 z-10 bg-slate-300'>
                 <tr className=''>
                     <th>Company Name</th>
@@ -100,7 +102,7 @@ const EventItem = () => {
             {isSearching ? (
                 <tbody>
                 {filteredEvents.map(events => (
-                    <tr className='border-separate border-spacing-20' key={events.event_id}>
+                    <tr className='h-20' key={events.event_id}>
                         <td>{events.event_name}</td>
                         <td>{events.event_description}</td>
                         <td>{events.event_start} <br/> {events.event_end}</td>

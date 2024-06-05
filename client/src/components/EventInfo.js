@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-const EventInfo = ({ event, onCancel}) => {
+const EventInfo = ({ event, onCancel }) => {
     const [eventName, setEventName] = useState(event.event_name);
     const [eventDescription, setEventDescription] = useState(event.event_description);
     const [eventStart, setEventStart] = useState(event.event_start);
@@ -354,8 +354,6 @@ const EventInfo = ({ event, onCancel}) => {
               </div>
             </>
           )}
-
-
           </form>
         </div>
       </div>

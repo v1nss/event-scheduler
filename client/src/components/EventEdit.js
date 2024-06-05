@@ -7,6 +7,7 @@ const EventEdit = ({ event, onCancel }) => {
     const [eventEnd, setEventEnd] = useState(event.event_end);
     const [location, setLocation] = useState(event.location);
     const [eventCost, setEventCost] = useState(event.event_cost);
+    
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');
@@ -58,9 +59,9 @@ const EventEdit = ({ event, onCancel }) => {
 
 
     return (
-        <div className="min-h-80p w-100p flex items-center justify-center p-4">
+      <div className="min-h-80p w-100p flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Event</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Event Info</h1>
         <form onSubmit={onSubmitForm}>
           {eventEditPage === 1 && (
             <>
@@ -372,8 +373,6 @@ const EventEdit = ({ event, onCancel }) => {
               </div>
             </>
           )}
-
-
           </form>
         </div>
       </div>

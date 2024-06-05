@@ -8,4 +8,5 @@ CREATE TABLE events(
     event_end VARCHAR(50),
     location VARCHAR(255),
     event_cost VARCHAR(50)
-);
+    -- event_status BOOLEAN
+)
