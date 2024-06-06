@@ -8,7 +8,7 @@ const EventInfo = ({ event, onCancel }) => {
     const [eventEnd, setEventEnd] = useState(event.event_end);
     const [location, setLocation] = useState(event.location);
     const [eventCost, setEventCost] = useState(event.event_cost);
-
+    
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');

@@ -5,6 +5,9 @@ function ShowForm({onCancel}) {
   const [eventDescription, setEventDescription] = useState("");
   const [eventStart, setEventStart] = useState("");
   const [eventEnd, setEventEnd] = useState("");
+  const [formattedEventStart, setFormattedEventStart] = useState("");
+  const [formattedEventEnd, setFormattedEventEnd] = useState("");
+  const [durationHours, setDurationHours] = useState(null);
   const [location, setLocation] = useState("");
   const [eventCost, setEventCost] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -15,17 +18,18 @@ function ShowForm({onCancel}) {
   const [eventEmail, setEventEmail] = useState("");
   const [eventStaff, setEventStaff] = useState("");
   const [eventSpace, setEventSpace] = useState("");
+  const [rentalFee, setRentalFee] = useState("");
   // const [others, setOthers] = useState("");
 
   const [error, setError] = useState("");
 
   const [eventEditPage, setEventEditPage] = useState(1)
-  const [currentNotAllowed, setCurrentNotAllowed] = useState('');
-  const [currentMaterial, setCurrentMaterial] = useState('');
-  const [currentRequirement, setCurrentRequirement] = useState('');
 
+  const [currentNotAllowed, setCurrentNotAllowed] = useState('');
   const [notAllowed, setNotAllowed] = useState([]);
+  const [currentMaterial, setCurrentMaterial] = useState('');
   const [materialsToBring, setMaterialsToBring] = useState([]);
+  const [currentRequirement, setCurrentRequirement] = useState('');
   const [requirements, setRequirements] = useState([]);
 
   const handleAddNotAllowed = () => {
@@ -47,10 +51,58 @@ function ShowForm({onCancel}) {
     e.preventDefault();
 
     // Input validation
-    if (!eventName || !eventDescription || !eventStart || !eventEnd || !location || !eventCost || !companyName || !eventProduct|| !eventType|| !mobileNumber|| !eventEmail|| !eventStaff) {
-      setError("All fields are required.");
-      return;
+    if (!eventName) {
+      setError("Event Name is required.");
+      return false;
     }
+    if (!eventDescription) {
+      setError("Event Description is required.");
+      return false;
+    }
+    if (!eventStart) {
+      setError("Event Start is required.");
+      return false;
+    }
+    if (!eventEnd) {
+      setError("Event End is required.");
+      return false;
+    }
+    if (!location) {
+      setError("Location is required.");
+      return false;
+    }
+    if (!eventCost) {
+      setError("Event Cost is required.");
+      return false;
+    }
+    if (!companyName) {
+      setError("Company Name is required.");
+      return false;
+    }
+    if (!eventProduct) {
+      setError("Event Product is required.");
+      return false;
+    }
+    if (!eventType) {
+      setError("Event Type is required.");
+      return false;
+    }
+    if (!mobileNumber) {
+      setError("Mobile Number is required.");
+      return false;
+    }
+    if (!eventEmail) {
+      setError("Event Email is required.");
+      return false;
+    }
+    if (!eventStaff) {
+      setError("Number of Event Staff is required.");
+      return false;
+    }
+  
+    // If all fields are filled, clear the error and return true
+    setError(null);
+    // return true;
 
     try {
       const body = {
@@ -66,7 +118,8 @@ function ShowForm({onCancel}) {
         mobile_number: mobileNumber,
         event_email: eventEmail,
         event_staff: eventStaff,
-        event_space: eventSpace
+        event_space: eventSpace,
+        rental_fee: rentalFee
       };
       const response = await fetch("http://localhost:5000/events", {
         method: "POST",
@@ -98,9 +151,79 @@ function ShowForm({onCancel}) {
     setOtherProduct(e.target.value);
   };
 
-  const handleSpaceRentalFee = (e, eventSpace, hrs) => {
+  const handleEventStartChange = (e) => {
+    const startValue = e.target.value;
+    setEventStart(startValue);
 
-  }
+    if (eventEnd && new Date(startValue) > new Date(eventEnd)) {
+      setEventEnd('');
+      setDurationHours(null);
+    } else {
+      calculateDuration(startValue, eventEnd);
+    }
+  };
+
+  const handleEventEndChange = (e) => {
+    const endValue = e.target.value;
+    if (new Date(eventStart) <= new Date(endValue)) {
+      setEventEnd(endValue);
+      calculateDuration(eventStart, endValue);
+    } else {
+      alert('End time cannot be earlier than start time');
+    }
+  };
+
+  const calculateDuration = (start, end) => {
+    if (start && end) {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const diffMs = endDate - startDate;
+      const diffHrs = diffMs / (1000 * 60 * 60); // convert milliseconds to hours
+      setDurationHours(diffHrs);
+      calculateSpaceRentalFee(eventSpace, diffHrs);
+    }
+  };
+
+  const handleSpaceChange = (space) => {
+    setEventSpace(space);
+    calculateSpaceRentalFee(space, durationHours);
+  };
+
+  const calculateSpaceRentalFee = (eventSpace, durationHours) => {
+    if (!durationHours) return;
+
+    let rentalFeePerHour = 0;
+    switch (eventSpace) {
+      case 'Small Meeting Room':
+        rentalFeePerHour = 3000;
+        break;
+      case 'Conference Room':
+        rentalFeePerHour = 6000;
+        break;
+      case 'Banquet Room':
+        rentalFeePerHour = 12000;
+        break;
+      case 'Ballroom':
+        rentalFeePerHour = 30000;
+        break;
+      case 'Exhibition Hall':
+        rentalFeePerHour = 50000;
+        break;
+      case 'Convention Center':
+        rentalFeePerHour = 100000;
+        break;
+      default:
+        rentalFeePerHour = 0;
+    }
+
+    const totalCost = rentalFeePerHour * durationHours;
+    setEventCost(totalCost);
+    setRentalFee(rentalFeePerHour);
+
+    console.log("event cost: ", totalCost);
+    console.log("fee per hour: ", rentalFeePerHour);
+    console.log("duration hrs: ", durationHours);
+  };
 
   return (
     <div className="min-h-80p w-100p flex items-center justify-center p-4">
@@ -136,7 +259,7 @@ function ShowForm({onCancel}) {
               type="datetime-local"
               name="event_start"
               value={eventStart}
-              onChange={(e) => setEventStart(e.target.value)}
+              onChange={handleEventStartChange}
               className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
@@ -146,7 +269,7 @@ function ShowForm({onCancel}) {
               type="datetime-local"
               name="event_end"
               value={eventEnd}
-              onChange={(e) => setEventEnd(e.target.value)}
+              onChange={handleEventEndChange}
               className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             />
           </div>
@@ -257,40 +380,40 @@ function ShowForm({onCancel}) {
             <select
               name="event_space"
               value={eventSpace}
-              onChange={(e) => {
-                setEventSpace(e.target.value);
-                handleSpaceRentalFee();
-              }}
+              onChange={(e) => 
+                // setEventSpace(e.target.value);
+                handleSpaceChange(e.target.value)
+              }
               className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             >
               <option value="">Select Event Space</option>
-              <option value="space1">Small Meeting Room</option>
-              <option value="space2">Conference Room</option>
-              <option value="space3">Banquet Room</option>
-              <option value="space4">Ballroom</option>
-              <option value="space5">Exhibition Hall</option>
-              <option value="space6">Convention Center</option>
+              <option value="Small Meeting Room">Small Meeting Room</option>
+              <option value="Conference Room">Conference Room</option>
+              <option value="Banquet Room">Banquet Room</option>
+              <option value="Ballroom">Ballroom</option>
+              <option value="Exhibition Hall">Exhibition Hall</option>
+              <option value="Convention Center">Convention Center</option>
             </select>
           </div>
           <div className="mb-4 flex items-center">
             <label className="w-1/3 text-gray-700 font-medium text-left">Space Rental Fee:</label>
-            <input
+            <div
               type="number"
               name="space_rental_fee"
-              // value={spaceRentalFee}
-              // onChange={(e) => setSpaceRentalFee(e.target.value)}
-              className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            />
+              className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 h-7"
+            >
+              {rentalFee}
+            </div>
           </div>
           <div className="mb-4 flex items-center">
             <label className="w-1/3 text-gray-700 font-medium text-left">Event Cost:</label>
-            <input
+            <div
               type="number"
               name="event_cost"
-              // value={eventCost}
-              // onChange={(e) => setEventCost(e.target.value)}
-              className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-            />
+              className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 h-7"
+            >
+              {eventCost}
+            </div>
           </div>
           <div className="mb-4 flex items-center">
             <label className="w-1/3 text-gray-700 font-medium text-left">Number of Staff:</label>

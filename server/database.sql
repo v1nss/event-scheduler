@@ -15,6 +15,7 @@ CREATE TABLE events(
     mobile_number VARCHAR(12),
     event_email VARCHAR(50),
     event_staff VARCHAR(15),
-    event_space VARCHAR(12)
+    event_space VARCHAR(12),
+    rental_fee NUMERIC
     -- allowed TEXT,
 )
