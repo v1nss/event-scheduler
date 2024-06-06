@@ -61,7 +61,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <div
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
-                  {eventName}
+                  {companyName}
                 </div>
               </div>
               <div className="mb-4 flex items-center">
@@ -101,25 +101,25 @@ const EventInfo = ({ event, onCancel }) => {
                 <div
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
-                  {eventDescription}
+                  {eventProduct}
                 </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Type:</label>
-                <select
+                <div
                   type="drop-down"
                   name="event_type"
                   value={eventType}
                   readOnly
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm bg-gray-100 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 >
-                  <option>{eventType}</option>
-                </select>
+                  {eventType}
+                </div>
               </div>
-              <div className="mb-4 flex items-center">
+              <div className="mb-4 flex items-center ">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Description:</label>
                 <div
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                  className="w-2/3 ml-2 h-40 overflow-auto rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
                   {eventDescription}
                 </div>

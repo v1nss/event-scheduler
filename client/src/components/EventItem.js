@@ -104,11 +104,14 @@ const EventItem = () => {
                 {filteredEvents.map(events => (
                     <tr className='h-20' key={events.event_id}>
                         <td>{events.event_name}</td>
-                        <td>{events.event_description}</td>
+                        <td><span className="block max-w-xs truncate" title={events.event_description}>
+                            {events.event_description}
+                        </span>
+                        </td>
                         <td>{events.event_start} <br/> {events.event_end}</td>
                         <td>{events.location}</td>
                         {/* <td>{events.location}</td> */}
-                        <td>₱{events.event_cost}</td>
+                        <td>{events.event_space}</td>
                         <td>
                             <button 
                                 className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-info-icon"
@@ -137,11 +140,14 @@ const EventItem = () => {
             {events.map(event => (
                 <tr key={event.event_id} className='h-20'>
                         <td>{event.event_name}</td>
-                        <td>{event.event_description}</td>
+                        <td><span className="block max-w-xs truncate" title={event.event_description}>
+                            {event.event_description}
+                        </span>
+                        </td>
                         <td>{event.event_start} <br/> {event.event_end}</td>
                         <td>{event.location}</td>
                         {/* <td>{event.location}</td> */}
-                        <td>₱{event.event_cost}</td>
+                        <td>{event.event_space}</td>
                     <td>
                         <button 
                             className="bg-no-repeat bg-contain w-8 h-8 m-3 bg-info-icon"
