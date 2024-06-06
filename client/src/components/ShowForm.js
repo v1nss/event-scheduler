@@ -5,8 +5,6 @@ function ShowForm({onCancel}) {
   const [eventDescription, setEventDescription] = useState("");
   const [eventStart, setEventStart] = useState("");
   const [eventEnd, setEventEnd] = useState("");
-  const [formattedEventStart, setFormattedEventStart] = useState("");
-  const [formattedEventEnd, setFormattedEventEnd] = useState("");
   const [durationHours, setDurationHours] = useState(null);
   const [location, setLocation] = useState("");
   const [eventCost, setEventCost] = useState("");
@@ -99,10 +97,7 @@ function ShowForm({onCancel}) {
       setError("Number of Event Staff is required.");
       return false;
     }
-  
-    // If all fields are filled, clear the error and return true
     setError(null);
-    // return true;
 
     try {
       const body = {

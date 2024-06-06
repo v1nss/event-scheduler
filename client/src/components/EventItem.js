@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EventEdit from './EventEdit';
 import EventInfo from './EventInfo';
 import Modal from "./Modal";
+import { format, parseISO, isValid } from 'date-fns';
 
 const EventItem = () => {
     const [events, setEvents] = useState([]);
@@ -66,7 +67,26 @@ const EventItem = () => {
         setFilteredEvents(filtered);
       }, [searchQuery, events]);
 
-    
+      const formatDate = (dateString) => {
+        if (!dateString) {
+          console.error('Date string is undefined or empty');
+          return 'Invalid date';
+        }
+      
+        try {
+          const parsedDate = parseISO(dateString);
+          console.log('Parsed Date:', parsedDate);  // Debugging line
+          if (isValid(parsedDate)) {
+            return format(parsedDate, 'PPpp'); // 'PPpp' is the format for 'Jun 7, 2024, 1:35 AM'
+          } else {
+            console.error('Invalid date string:', dateString);
+            return 'Invalid date';
+          }
+        } catch (error) {
+          console.error('Error parsing date:', dateString, error);
+          return 'Invalid date';
+        }
+      };
     
 
   return (
@@ -95,7 +115,6 @@ const EventItem = () => {
                     <th>Start & End</th>
                     <th>Location</th>
                     <th>Event Space</th>
-                    {/* <th>Cost</th> */}
                     <th>More Option</th>
                 </tr>
             </thead>
@@ -108,9 +127,8 @@ const EventItem = () => {
                             {events.event_description}
                         </span>
                         </td>
-                        <td>{events.event_start} <br/> {events.event_end}</td>
+                        <td>{formatDate(events.event_start)} <br/> {formatDate(events.event_end)}</td>
                         <td>{events.location}</td>
-                        {/* <td>{events.location}</td> */}
                         <td>{events.event_space}</td>
                         <td>
                             <button 
@@ -144,9 +162,8 @@ const EventItem = () => {
                             {event.event_description}
                         </span>
                         </td>
-                        <td>{event.event_start} <br/> {event.event_end}</td>
+                        <td>{formatDate(event.event_start)} <br/> {formatDate(event.event_end)}</td>
                         <td>{event.location}</td>
-                        {/* <td>{event.location}</td> */}
                         <td>{event.event_space}</td>
                     <td>
                         <button 
