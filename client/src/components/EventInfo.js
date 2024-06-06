@@ -125,7 +125,7 @@ const EventInfo = ({ event, onCancel }) => {
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
                 <button
                   type="button"
                   onClick={onCancel}
@@ -197,26 +197,6 @@ const EventInfo = ({ event, onCancel }) => {
                 />
               </div>
               <div className="mb-4 flex items-center">
-                <label className="w-1/3 text-gray-700 font-medium text-left">Number of Participants:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4 flex items-center">
-                <label className="w-1/3 text-gray-700 font-medium text-left">Number of Guest/s:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Number of Staff/s:</label>
                 <input
                   type="number"
@@ -226,13 +206,20 @@ const EventInfo = ({ event, onCancel }) => {
                   className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
                 <button
                   type="button"
                   onClick={onCancel}
                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300 mr-2"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEventEditPage(1)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 mr-2"
+                >
+                  Previous
                 </button>
                 <button
                   type="button"
@@ -344,6 +331,13 @@ const EventInfo = ({ event, onCancel }) => {
                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEventEditPage(2)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 mr-2"
+                >
+                  Previous
                 </button>
                 <button
                   type="submit"
