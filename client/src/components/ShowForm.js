@@ -97,6 +97,10 @@ function ShowForm({onCancel}) {
       setError("Number of Event Staff is required.");
       return false;
     }
+    if (!eventSpace) {
+      setError("Number of Event Staff is required.");
+      return false;
+    }
     setError(null);
 
     try {
