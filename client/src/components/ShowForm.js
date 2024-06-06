@@ -15,7 +15,7 @@ function ShowForm({onCancel}) {
   const [eventEmail, setEventEmail] = useState("");
   const [eventStaff, setEventStaff] = useState("");
   const [eventSpace, setEventSpace] = useState("");
-  const [others, setOthers] = useState("");
+  // const [others, setOthers] = useState("");
 
   const [error, setError] = useState("");
 
@@ -65,7 +65,8 @@ function ShowForm({onCancel}) {
         event_type: eventType,
         mobile_number: mobileNumber,
         event_email: eventEmail,
-        event_staff: eventStaff
+        event_staff: eventStaff,
+        event_space: eventSpace
       };
       const response = await fetch("http://localhost:5000/events", {
         method: "POST",
@@ -96,6 +97,10 @@ function ShowForm({onCancel}) {
   const handleOtherProductChange = (e) => {
     setOtherProduct(e.target.value);
   };
+
+  const handleSpaceRentalFee = (e, eventSpace, hrs) => {
+
+  }
 
   return (
     <div className="min-h-80p w-100p flex items-center justify-center p-4">
@@ -252,16 +257,19 @@ function ShowForm({onCancel}) {
             <select
               name="event_space"
               value={eventSpace}
-              onChange={(e) => setEventSpace(e.target.value)}
+              onChange={(e) => {
+                setEventSpace(e.target.value);
+                handleSpaceRentalFee();
+              }}
               className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             >
               <option value="">Select Event Space</option>
               <option value="space1">Small Meeting Room</option>
-              <option value="space1">Conference Room</option>
-              <option value="space1">Banquet Room</option>
-              <option value="space1">Ballroom</option>
-              <option value="space1">Exhibition Hall</option>
-              <option value="space2">Convention Center</option>
+              <option value="space2">Conference Room</option>
+              <option value="space3">Banquet Room</option>
+              <option value="space4">Ballroom</option>
+              <option value="space5">Exhibition Hall</option>
+              <option value="space6">Convention Center</option>
             </select>
           </div>
           <div className="mb-4 flex items-center">
@@ -347,7 +355,7 @@ function ShowForm({onCancel}) {
                 Add
               </button>
             </div>
-            <div className="mb-4 p-2 border border-gray-300 rounded-md">
+            <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
               {notAllowed.join(' | ')}
             </div>
           </div>
@@ -377,7 +385,7 @@ function ShowForm({onCancel}) {
                 Add
               </button>
             </div>
-            <div className="mb-4 p-2 border border-gray-300 rounded-md">
+            <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
               {materialsToBring.join(' | ')}
             </div>
           </div>
@@ -407,7 +415,7 @@ function ShowForm({onCancel}) {
                 Add
               </button>
             </div>
-            <div className="mb-4 p-2 border border-gray-300 rounded-md">
+            <div className="mb-4 p-2 border border-gray-300 rounded-md h-24 ">
               {requirements.join(' | ')}
             </div>
           </div>
