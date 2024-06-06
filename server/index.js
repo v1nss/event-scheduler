@@ -6,26 +6,65 @@ const pool = require("./db");
 app.use(cors());
 app.use(express.json());
 
-app.post("/events", async(req, res) => {
+app.post("/events", async (req, res) => {
     try {
-        const { event_name, 
+        const { 
+            event_name, 
             event_description, 
             event_start, 
             event_end, 
             location, 
-            event_cost 
+            event_cost,
+            company_name,
+            event_product,
+            event_type,
+            mobile_number,
+            event_email,
+            event_staff,
+            event_space,
+            rental_fee
         } = req.body;
 
         const newEvent = await pool.query(
-            "INSERT INTO events (event_name, event_description, event_start, event_end, location, event_cost) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
-            [event_name, event_description, event_start, event_end, location, event_cost]
+            `INSERT INTO events (
+                event_name, 
+                event_description, 
+                event_start, 
+                event_end, 
+                location, 
+                event_cost,
+                company_name,
+                event_product,
+                event_type,
+                mobile_number,
+                event_email,
+                event_staff,
+                event_space,
+                rental_fee
+            ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`,
+            [
+                event_name, 
+                event_description, 
+                event_start, 
+                event_end, 
+                location, 
+                event_cost,
+                company_name,
+                event_product,
+                event_type,
+                mobile_number,
+                event_email,
+                event_staff,
+                event_space,
+                rental_fee
+            ]
         );
         res.json(newEvent.rows[0]);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
     }
-})
+});
 
 app.get("/events", async (req, res) => {
     try {
@@ -63,12 +102,51 @@ app.put("/events/:id", async (req, res) => {
             event_start, 
             event_end, 
             location, 
-            event_cost 
+            event_cost,
+            company_name,
+            event_product,
+            event_type,
+            mobile_number,
+            event_email,
+            event_staff,
+            event_space,
+            rental_fee
         } = req.body;
         
         const updateEvent = await pool.query(
-            "UPDATE events SET event_name = $1, event_description = $2, event_start = $3, event_end = $4, location = $5, event_cost = $6 WHERE event_id = $7 RETURNING *",
-            [event_name, event_description, event_start, event_end, location, event_cost, id]
+            `UPDATE events SET 
+                event_name = $1, 
+                event_description = $2, 
+                event_start = $3, 
+                event_end = $4, 
+                location = $5, 
+                event_cost = $6,
+                company_name = $7,
+                event_product = $8,
+                event_type = $9,
+                mobile_number = $10,
+                event_email = $11,
+                event_staff = $12,
+                event_space = $13,
+                rental_fee = $14
+            WHERE event_id = $15 RETURNING *`,
+            [
+                event_name, 
+                event_description, 
+                event_start, 
+                event_end, 
+                location, 
+                event_cost,
+                company_name,
+                event_product,
+                event_type,
+                mobile_number,
+                event_email,
+                event_staff,
+                event_space,
+                rental_fee,
+                id
+            ]
         );
 
         if (updateEvent.rows.length === 0) {

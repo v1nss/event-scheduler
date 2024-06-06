@@ -8,7 +8,17 @@ const EventInfo = ({ event, onCancel }) => {
     const [eventEnd, setEventEnd] = useState(event.event_end);
     const [location, setLocation] = useState(event.location);
     const [eventCost, setEventCost] = useState(event.event_cost);
-    
+    // const [durationHours, setDurationHours] = useState(null);
+    const [companyName, setCompanyName] = useState(event.company_name);
+    const [eventProduct, setEventProduct] = useState(event.event_product);
+    // const [otherProduct, setOtherProduct] = useState('');
+    const [eventType, setEventType] = useState(event.event_type);
+    const [mobileNumber, setMobileNumber] = useState(event.mobile_number);
+    const [eventEmail, setEventEmail] = useState(event.event_email);
+    const [eventStaff, setEventStaff] = useState(event.event_staff);
+    const [eventSpace, setEventSpace] = useState(event.event_space);
+    const [rentalFee, setRentalFee] = useState(event.rental_fee);
+
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');
@@ -40,7 +50,7 @@ const EventInfo = ({ event, onCancel }) => {
 
     
     return (
-        <div className="min-h-80p w-100p flex items-center justify-center p-4">
+      <div className="min-h-80p w-100p flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">Event Info</h1>
         <form onSubmit={onSubmitForm}>
@@ -48,82 +58,71 @@ const EventInfo = ({ event, onCancel }) => {
             <>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Company Name:</label>
-                <input
-                  type="text"
-                  name="company_name"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventName}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Name:</label>
-                <input
-                  type="text"
-                  name="event_name"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventName}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Start:</label>
-                <input
-                  type="datetime-local"
-                  name="event_start"
-                  value={eventStart}
-                  onChange={(e) => setEventStart(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventStart}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event End:</label>
-                <input
-                  type="datetime-local"
-                  name="event_end"
-                  value={eventEnd}
-                  onChange={(e) => setEventEnd(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventEnd}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Location:</label>
-                <input
-                  type="text"
-                  name="event_location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {location}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Product:</label>
-                <input
-                  type="text"
-                  name="product"
-                  value={eventDescription}
-                  onChange={(e) => setEventDescription(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventDescription}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Type:</label>
                 <select
                   type="drop-down"
                   name="event_type"
-                  value={eventDescription}
-                  onChange={(e) => setEventDescription(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                  value={eventType}
+                  readOnly
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm bg-gray-100 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                >
+                  <option>{eventType}</option>
+                </select>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Description:</label>
-                <textarea
-                  name="event_description"
-                  value={eventDescription}
-                  onChange={(e) => setEventDescription(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventDescription}
+                </div>
               </div>
               <div className="flex justify-between">
                 <button
@@ -143,68 +142,59 @@ const EventInfo = ({ event, onCancel }) => {
               </div>
             </>
           )}
-  
+    
           {eventEditPage === 2 && (
             <>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Mobile Number:</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {mobileNumber}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Email:</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventEmail}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Space:</label>
                 <select
                   type="text"
-                //   name="location"
-                //   value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                  value={eventSpace}
+                  readOnly
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm bg-gray-100 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                >
+                  <option>{eventSpace}</option>
+                </select>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Space Rental Fee:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventCost}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Cost:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventCost}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Number of Staff/s:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                <div
+                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                >
+                  {eventStaff}
+                </div>
               </div>
               <div className="flex justify-between">
                 <button
@@ -231,19 +221,17 @@ const EventInfo = ({ event, onCancel }) => {
               </div>
             </>
           )}
-
-        {eventEditPage === 3 && (
+    
+          {eventEditPage === 3 && (
             <>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Not Allowed</label>
                 <div className="flex items-center mb-2">
-                  <input
-                    type="text"
-                    name="not_allowed"
-                    value={currentNotAllowed}
-                    onChange={(e) => setCurrentNotAllowed(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                  />
+                  <div
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                  >
+                    {notAllowed.join(' | ')}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setCurrentNotAllowed('')}
@@ -259,21 +247,16 @@ const EventInfo = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
-                  {notAllowed.join(' | ')}
-                </div>
               </div>
-
+    
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Materials to Bring</label>
                 <div className="flex items-center mb-2">
-                  <input
-                    type="text"
-                    name="materials_to_bring"
-                    value={currentMaterial}
-                    onChange={(e) => setCurrentMaterial(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                  />
+                  <div
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                  >
+                    {materialsToBring.join(' | ')}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setCurrentMaterial('')}
@@ -289,21 +272,16 @@ const EventInfo = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
-                  {materialsToBring.join(' | ')}
-                </div>
               </div>
-
+    
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Requirements</label>
                 <div className="flex items-center mb-2">
-                  <input
-                    type="text"
-                    name="requirements"
-                    value={currentRequirement}
-                    onChange={(e) => setCurrentRequirement(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                  />
+                  <div
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                  >
+                    {requirements.join(' | ')}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setCurrentRequirement('')}
@@ -319,11 +297,8 @@ const EventInfo = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
-                  {requirements.join(' | ')}
-                </div>
               </div>
-
+    
               <div className="flex justify-between">
                 <button
                   type="button"
@@ -348,9 +323,9 @@ const EventInfo = ({ event, onCancel }) => {
               </div>
             </>
           )}
-          </form>
-        </div>
+        </form>
       </div>
+    </div>
     );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import './styles/EventSchedule.css';
 import EventItem from './EventItem';
 import ShowForm from './ShowForm';
 import Modal from './Modal';
