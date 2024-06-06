@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { format, parseISO, isValid } from 'date-fns';
 
 
 const EventInfo = ({ event, onCancel }) => {
@@ -28,32 +29,32 @@ const EventInfo = ({ event, onCancel }) => {
     const [materialsToBring, setMaterialsToBring] = useState([]);
     const [requirements, setRequirements] = useState([]);
     
-  
-    const handleAddNotAllowed = () => {
-      setNotAllowed([...notAllowed, currentNotAllowed]);
-      setCurrentNotAllowed('');
+    const formatDate = (dateString) => {
+      if (!dateString) {
+        console.error('Date string is undefined or empty');
+        return 'Invalid date';
+      }
+    
+      try {
+        const parsedDate = parseISO(dateString);
+        console.log('Parsed Date:', parsedDate);
+        if (isValid(parsedDate)) {
+          return format(parsedDate, 'PPpp');
+        } else {
+          console.error('Invalid date string:', dateString);
+          return 'Invalid date';
+        }
+      } catch (error) {
+        console.error('Error parsing date:', dateString, error);
+        return 'Invalid date';
+      }
     };
-  
-    const handleAddMaterial = () => {
-      setMaterialsToBring([...materialsToBring, currentMaterial]);
-      setCurrentMaterial('');
-    };
-  
-    const handleAddRequirement = () => {
-      setRequirements([...requirements, currentRequirement]);
-      setCurrentRequirement('');
-    };
-
-    const onSubmitForm = async (e) =>{
-        
-    }
-
     
     return (
       <div className="min-h-80p w-100p flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-xl">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">Event Info</h1>
-        <form onSubmit={onSubmitForm}>
+        <form>
           {eventEditPage === 1 && (
             <>
               <div className="mb-4 flex items-center">
@@ -77,7 +78,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <div
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
-                  {eventStart}
+                  {formatDate(eventStart)}
                 </div>
               </div>
               <div className="mb-4 flex items-center">
@@ -85,7 +86,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <div
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
-                  {eventEnd}
+                  {formatDate(eventEnd)}
                 </div>
               </div>
               <div className="mb-4 flex items-center">
@@ -163,21 +164,21 @@ const EventInfo = ({ event, onCancel }) => {
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Space:</label>
-                <select
+                <div
                   type="text"
                   value={eventSpace}
                   readOnly
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm bg-gray-100 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 >
-                  <option>{eventSpace}</option>
-                </select>
+                  {eventSpace}
+                </div>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Space Rental Fee:</label>
                 <div
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
                 >
-                  {eventCost}
+                  {rentalFee}
                 </div>
               </div>
               <div className="mb-4 flex items-center">
@@ -228,24 +229,10 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Not Allowed</label>
                 <div className="flex items-center mb-2">
                   <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
                   >
                     {notAllowed.join(' | ')}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setCurrentNotAllowed('')}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAddNotAllowed}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Add
-                  </button>
                 </div>
               </div>
     
@@ -253,24 +240,10 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Materials to Bring</label>
                 <div className="flex items-center mb-2">
                   <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
                   >
                     {materialsToBring.join(' | ')}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setCurrentMaterial('')}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAddMaterial}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Add
-                  </button>
                 </div>
               </div>
     
@@ -278,24 +251,10 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Requirements</label>
                 <div className="flex items-center mb-2">
                   <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100"
+                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
                   >
                     {requirements.join(' | ')}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setCurrentRequirement('')}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Clear
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAddRequirement}
-                    className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
-                  >
-                    Add
-                  </button>
                 </div>
               </div>
     
@@ -310,15 +269,15 @@ const EventInfo = ({ event, onCancel }) => {
                 <button
                   type="button"
                   onClick={() => setEventEditPage(2)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 mr-2"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 "
                 >
                   Previous
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
                 >
-                  Finish
+                  Close
                 </button>
               </div>
             </>

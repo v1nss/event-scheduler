@@ -7,7 +7,17 @@ const EventEdit = ({ event, onCancel }) => {
     const [eventEnd, setEventEnd] = useState(event.event_end);
     const [location, setLocation] = useState(event.location);
     const [eventCost, setEventCost] = useState(event.event_cost);
+    const [companyName, setCompanyName] = useState(event.company_name);
+    const [eventProduct, setEventProduct] = useState(event.event_product);
+    // const [otherProduct, setOtherProduct] = useState('');
+    const [eventType, setEventType] = useState(event.event_type);
+    const [mobileNumber, setMobileNumber] = useState(event.mobile_number);
+    const [eventEmail, setEventEmail] = useState(event.event_email);
+    const [eventStaff, setEventStaff] = useState(event.event_staff);
+    const [eventSpace, setEventSpace] = useState(event.event_space);
+    const [rentalFee, setRentalFee] = useState(event.rental_fee);
     
+    const [durationHours, setDurationHours] = useState(null);
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');
@@ -42,7 +52,15 @@ const EventEdit = ({ event, onCancel }) => {
                 event_start: eventStart,
                 event_end: eventEnd,
                 location,
-                event_cost: eventCost
+                event_cost: eventCost,
+                company_name: companyName,
+                event_product: eventProduct,
+                event_type: eventType,
+                mobile_number: mobileNumber,
+                event_email: eventEmail,
+                event_staff: eventStaff,
+                event_space: eventSpace,
+                rental_fee: rentalFee
             };
             await fetch(`http://localhost:5000/events/${event.event_id}`, {
                 method: "PUT",
@@ -56,7 +74,75 @@ const EventEdit = ({ event, onCancel }) => {
         }
     };
 
+    const handleEventStartChange = (e) => {
+      const startValue = e.target.value;
+      setEventStart(startValue);
+  
+      if (eventEnd && new Date(startValue) > new Date(eventEnd)) {
+        setEventEnd('');
+        setDurationHours(null);
+      } else {
+        calculateDuration(startValue, eventEnd);
+      }
+    };
+  
+    const handleEventEndChange = (e) => {
+      const endValue = e.target.value;
+      if (new Date(eventStart) <= new Date(endValue)) {
+        setEventEnd(endValue);
+        calculateDuration(eventStart, endValue);
+      } else {
+        alert('End time cannot be earlier than start time');
+      }
+    };
 
+    const calculateDuration = (start, end) => {
+      if (start && end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const diffMs = endDate - startDate;
+        const diffHrs = diffMs / (1000 * 60 * 60); // convert milliseconds to hours
+        setDurationHours(diffHrs);
+        calculateSpaceRentalFee(eventSpace, diffHrs);
+      }
+    };
+  
+    const handleSpaceChange = (space) => {
+      setEventSpace(space);
+      calculateSpaceRentalFee(space, durationHours);
+    };
+  
+    const calculateSpaceRentalFee = (eventSpace, durationHours) => {
+      if (!durationHours) return;
+  
+      let rentalFeePerHour = 0;
+      switch (eventSpace) {
+        case 'Small Meeting Room':
+          rentalFeePerHour = 3000;
+          break;
+        case 'Conference Room':
+          rentalFeePerHour = 6000;
+          break;
+        case 'Banquet Room':
+          rentalFeePerHour = 12000;
+          break;
+        case 'Ballroom':
+          rentalFeePerHour = 30000;
+          break;
+        case 'Exhibition Hall':
+          rentalFeePerHour = 50000;
+          break;
+        case 'Convention Center':
+          rentalFeePerHour = 100000;
+          break;
+        default:
+          rentalFeePerHour = 0;
+      }
+  
+      const totalCost = rentalFeePerHour * durationHours;
+      setEventCost(totalCost);
+      setRentalFee(rentalFeePerHour);
+    };
 
     return (
       <div className="min-h-80p w-100p flex items-center justify-center p-4">
@@ -70,8 +156,8 @@ const EventEdit = ({ event, onCancel }) => {
                 <input
                   type="text"
                   name="company_name"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -91,7 +177,7 @@ const EventEdit = ({ event, onCancel }) => {
                   type="datetime-local"
                   name="event_start"
                   value={eventStart}
-                  onChange={(e) => setEventStart(e.target.value)}
+                  onChange={handleEventStartChange}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -101,7 +187,7 @@ const EventEdit = ({ event, onCancel }) => {
                   type="datetime-local"
                   name="event_end"
                   value={eventEnd}
-                  onChange={(e) => setEventEnd(e.target.value)}
+                  onChange={handleEventEndChange}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -120,20 +206,24 @@ const EventEdit = ({ event, onCancel }) => {
                 <input
                   type="text"
                   name="product"
-                  value={eventDescription}
-                  onChange={(e) => setEventDescription(e.target.value)}
+                  value={eventProduct}
+                  onChange={(e) => setEventProduct(e.target.value)}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Type:</label>
                 <select
-                  type="drop-down"
                   name="event_type"
-                  value={eventDescription}
-                  onChange={(e) => setEventDescription(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                  value={eventType}
+                  onChange={(e) => setEventType(e.target.value)}
+                  className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                >
+                  <option value="">Select Event Type</option>
+                  <option value="type1">Type 1</option>
+                  <option value="type2">Type 2</option>
+                  {/* <!-- Add other options as needed --> */}
+                </select>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Description:</label>
@@ -148,7 +238,7 @@ const EventEdit = ({ event, onCancel }) => {
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300 mr-2"
+                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300"
                 >
                   Cancel
                 </button>
@@ -170,8 +260,8 @@ const EventEdit = ({ event, onCancel }) => {
                 <input
                   type="text"
                   name="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  value={mobileNumber}
+                  onChange={(e) => setMobileNumber(e.target.value)}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -179,29 +269,36 @@ const EventEdit = ({ event, onCancel }) => {
                 <label className="w-1/3 text-gray-700 font-medium text-left">Email:</label>
                 <input
                   type="text"
-                  name="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  name="email"
+                  value={eventEmail}
+                  onChange={(e) => setEventEmail(e.target.value)}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Event Space:</label>
                 <select
-                  type="text"
-                //   name="location"
-                //   value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
+                  name="event_space"
+                  value={eventSpace}
+                  onChange={(e) => handleSpaceChange(e.target.value)}
+                  className="w-2/3 ml-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  >
+                  <option value="">Select Event Space</option>
+                  <option value="Small Meeting Room">Small Meeting Room</option>
+                  <option value="Conference Room">Conference Room</option>
+                  <option value="Banquet Room">Banquet Room</option>
+                  <option value="Ballroom">Ballroom</option>
+                  <option value="Exhibition Hall">Exhibition Hall</option>
+                  <option value="Convention Center">Convention Center</option>
+                </select>
               </div>
               <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Space Rental Fee:</label>
                 <input
                   type="number"
                   name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
+                  value={rentalFee}
+                  onChange={(e) => setRentalFee(e.target.value)}
                   className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
@@ -216,42 +313,29 @@ const EventEdit = ({ event, onCancel }) => {
                 />
               </div>
               <div className="mb-4 flex items-center">
-                <label className="w-1/3 text-gray-700 font-medium text-left">Number of Participants:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4 flex items-center">
-                <label className="w-1/3 text-gray-700 font-medium text-left">Number of Guest/s:</label>
-                <input
-                  type="number"
-                  name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
-                  className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4 flex items-center">
                 <label className="w-1/3 text-gray-700 font-medium text-left">Number of Staff/s:</label>
                 <input
                   type="number"
                   name="event_cost"
-                  value={eventCost}
-                  onChange={(e) => setEventCost(e.target.value)}
+                  value={eventStaff}
+                  onChange={(e) => setEventStaff(e.target.value)}
                   className="w-30p ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
                 <button
                   type="button"
                   onClick={onCancel}
                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300 mr-2"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEventEditPage(1)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
+                >
+                  Previous
                 </button>
                 <button
                   type="button"
@@ -264,7 +348,7 @@ const EventEdit = ({ event, onCancel }) => {
             </>
           )}
 
-        {eventEditPage === 3 && (
+          {eventEditPage === 3 && (
             <>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Not Allowed</label>
@@ -274,7 +358,7 @@ const EventEdit = ({ event, onCancel }) => {
                     name="not_allowed"
                     value={currentNotAllowed}
                     onChange={(e) => setCurrentNotAllowed(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
@@ -291,7 +375,7 @@ const EventEdit = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
+                <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
                   {notAllowed.join(' | ')}
                 </div>
               </div>
@@ -304,7 +388,7 @@ const EventEdit = ({ event, onCancel }) => {
                     name="materials_to_bring"
                     value={currentMaterial}
                     onChange={(e) => setCurrentMaterial(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
@@ -321,7 +405,7 @@ const EventEdit = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
+                <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
                   {materialsToBring.join(' | ')}
                 </div>
               </div>
@@ -334,7 +418,7 @@ const EventEdit = ({ event, onCancel }) => {
                     name="requirements"
                     value={currentRequirement}
                     onChange={(e) => setCurrentRequirement(e.target.value)}
-                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    className="w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                   />
                   <button
                     type="button"
@@ -351,7 +435,7 @@ const EventEdit = ({ event, onCancel }) => {
                     Add
                   </button>
                 </div>
-                <div className="mb-4 p-2 border border-gray-300 rounded-md">
+                <div className="mb-4 p-2 border border-gray-300 rounded-md h-24 ">
                   {requirements.join(' | ')}
                 </div>
               </div>
@@ -363,6 +447,13 @@ const EventEdit = ({ event, onCancel }) => {
                   className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEventEditPage(2)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
+                >
+                  Previous
                 </button>
                 <button
                   type="submit"

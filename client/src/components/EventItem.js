@@ -75,9 +75,9 @@ const EventItem = () => {
       
         try {
           const parsedDate = parseISO(dateString);
-          console.log('Parsed Date:', parsedDate);  // Debugging line
+          console.log('Parsed Date:', parsedDate);
           if (isValid(parsedDate)) {
-            return format(parsedDate, 'PPpp'); // 'PPpp' is the format for 'Jun 7, 2024, 1:35 AM'
+            return format(parsedDate, 'PPpp');
           } else {
             console.error('Invalid date string:', dateString);
             return 'Invalid date';
@@ -111,7 +111,7 @@ const EventItem = () => {
             <thead className='h-20 sticky top-0 z-10 bg-slate-300'>
                 <tr className=''>
                     <th>Company Name</th>
-                    <th>Event Name</th>
+                    <th>Event Description</th>
                     <th>Start & End</th>
                     <th>Location</th>
                     <th>Event Space</th>
