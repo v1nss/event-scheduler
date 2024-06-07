@@ -275,6 +275,7 @@ const EventInfo = ({ event, onCancel }) => {
                 </button>
                 <button
                   type="button"
+                  onClick={onCancel}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
                 >
                   Close
