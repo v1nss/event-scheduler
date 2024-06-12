@@ -122,7 +122,7 @@ const EventItem = () => {
                 <tbody>
                 {filteredEvents.map(events => (
                     <tr className='h-20' key={events.event_id}>
-                        <td>{events.event_name}</td>
+                        <td>{events.company_name}</td>
                         <td><span className="block max-w-xs truncate" title={events.event_description}>
                             {events.event_description}
                         </span>
@@ -157,7 +157,7 @@ const EventItem = () => {
             <tbody>
             {events.map(event => (
                 <tr key={event.event_id} className='h-20'>
-                        <td>{event.event_name}</td>
+                        <td>{event.company_name}</td>
                         <td><span className="block max-w-xs truncate" title={event.event_description}>
                             {event.event_description}
                         </span>

@@ -19,16 +19,15 @@ const EventInfo = ({ event, onCancel }) => {
     const [eventStaff, setEventStaff] = useState(event.event_staff);
     const [eventSpace, setEventSpace] = useState(event.event_space);
     const [rentalFee, setRentalFee] = useState(event.rental_fee);
+    const [notAllowed, setNotAllowed] = useState(event.not_allowed);
+    const [materialsToBring, setMaterialsToBring] = useState(event.materials_tobring);
+    const [requirements, setRequirements] = useState(event.requirements);
 
     const [eventEditPage, setEventEditPage] = useState(1)
     const [currentNotAllowed, setCurrentNotAllowed] = useState('');
     const [currentMaterial, setCurrentMaterial] = useState('');
     const [currentRequirement, setCurrentRequirement] = useState('');
 
-    const [notAllowed, setNotAllowed] = useState([]);
-    const [materialsToBring, setMaterialsToBring] = useState([]);
-    const [requirements, setRequirements] = useState([]);
-    
     const formatDate = (dateString) => {
       if (!dateString) {
         console.error('Date string is undefined or empty');
@@ -48,6 +47,16 @@ const EventInfo = ({ event, onCancel }) => {
         console.error('Error parsing date:', dateString, error);
         return 'Invalid date';
       }
+    };
+
+    const formatData = (data) => {
+      if (Array.isArray(data)) {
+        return data.join(' | ');
+      } else if (typeof data === 'string') {
+        // Strip curly braces from a single string
+        return data.replace(/[\{\}]/g, '');
+      }
+      return data;
     };
     
     return (
@@ -228,32 +237,26 @@ const EventInfo = ({ event, onCancel }) => {
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Not Allowed</label>
                 <div className="flex items-center mb-2">
-                  <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
-                  >
-                    {notAllowed.join(' | ')}
+                  <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
+                    {formatData(notAllowed)}
                   </div>
                 </div>
               </div>
-    
+
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Materials to Bring</label>
                 <div className="flex items-center mb-2">
-                  <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
-                  >
-                    {materialsToBring.join(' | ')}
+                  <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
+                    {formatData(materialsToBring)}
                   </div>
                 </div>
               </div>
-    
+
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium text-left">Requirements</label>
                 <div className="flex items-center mb-2">
-                  <div
-                    className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24"
-                  >
-                    {requirements.join(' | ')}
+                  <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
+                    {formatData(requirements)}
                   </div>
                 </div>
               </div>

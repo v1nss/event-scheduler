@@ -22,7 +22,10 @@ app.post("/events", async (req, res) => {
             event_email,
             event_staff,
             event_space,
-            rental_fee
+            rental_fee,
+            not_allowed,
+            materials_toBring,
+            requirements
         } = req.body;
 
         const newEvent = await pool.query(
@@ -40,8 +43,11 @@ app.post("/events", async (req, res) => {
                 event_email,
                 event_staff,
                 event_space,
-                rental_fee
-            ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`,
+                rental_fee,
+                not_allowed,
+                materials_toBring,
+                requirements
+            ) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING *`,
             [
                 event_name, 
                 event_description, 
@@ -56,7 +62,10 @@ app.post("/events", async (req, res) => {
                 event_email,
                 event_staff,
                 event_space,
-                rental_fee
+                rental_fee,
+                not_allowed,
+                materials_toBring,
+                requirements
             ]
         );
         res.json(newEvent.rows[0]);
@@ -78,9 +87,9 @@ app.get("/events", async (req, res) => {
 
 app.get("/events/:id", async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
-        const events = await pool.query("SELECT * FROM events WHERE event_id = $1", [id])
+        const events = await pool.query("SELECT * FROM events WHERE event_id = $1", [id]);
 
         if (events.rows.length === 0) {
             return res.status(404).json({ error: "Event not found" });
@@ -88,7 +97,7 @@ app.get("/events/:id", async (req, res) => {
 
         res.json(events.rows[0]);
     } catch (err) {
-        console.error(err.message)
+        console.error(err.message);
         res.status(500).json({ error: "Server error" });
     }
 })
@@ -110,7 +119,10 @@ app.put("/events/:id", async (req, res) => {
             event_email,
             event_staff,
             event_space,
-            rental_fee
+            rental_fee,
+            not_allowed,
+            materials_toBring,
+            requirements
         } = req.body;
         
         const updateEvent = await pool.query(
@@ -128,8 +140,11 @@ app.put("/events/:id", async (req, res) => {
                 event_email = $11,
                 event_staff = $12,
                 event_space = $13,
-                rental_fee = $14
-            WHERE event_id = $15 RETURNING *`,
+                rental_fee = $14,
+                not_allowed = $15,
+                materials_toBring = $16,
+                requirements = $17
+            WHERE event_id = $18 RETURNING *`,
             [
                 event_name, 
                 event_description, 
@@ -145,6 +160,9 @@ app.put("/events/:id", async (req, res) => {
                 event_staff,
                 event_space,
                 rental_fee,
+                not_allowed,
+                materials_toBring,
+                requirements,
                 id
             ]
         );
@@ -162,9 +180,9 @@ app.put("/events/:id", async (req, res) => {
 
 app.delete("/events/:id", async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const deleteEvent = await pool.query("DELETE FROM events WHERE event_id = $1", [id]);
-        res.json("Event was deleted!")
+        res.json("Event was deleted!");
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });

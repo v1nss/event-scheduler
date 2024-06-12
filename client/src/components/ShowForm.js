@@ -36,13 +36,21 @@ function ShowForm({onCancel}) {
   };
 
   const handleAddMaterial = () => {
-    setMaterialsToBring([...materialsToBring, currentMaterial]);
-    setCurrentMaterial('');
+    if (notAllowed.includes(currentMaterial)) {
+      alert('This item is not allowed!');
+    } else {
+      setMaterialsToBring([...materialsToBring, currentMaterial]);
+      setCurrentMaterial('');
+    }
   };
 
   const handleAddRequirement = () => {
-    setRequirements([...requirements, currentRequirement]);
-    setCurrentRequirement('');
+    if (notAllowed.includes(currentRequirement)) {
+      alert('This item is not allowed!');
+    } else {
+      setRequirements([...requirements, currentRequirement]);
+      setCurrentRequirement('');
+    }
   };
 
   const onSubmitForm = async (e) => {
@@ -118,14 +126,17 @@ function ShowForm({onCancel}) {
         event_email: eventEmail,
         event_staff: eventStaff,
         event_space: eventSpace,
-        rental_fee: rentalFee
+        rental_fee: rentalFee,
+        not_allowed: notAllowed,
+        materials_toBring: materialsToBring,
+        requirements: requirements
       };
       const response = await fetch("http://localhost:5000/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-
+        console.log(notAllowed)
       if (response.ok) {
         window.location = "/";
       } else {
@@ -218,10 +229,6 @@ function ShowForm({onCancel}) {
     const totalCost = rentalFeePerHour * durationHours;
     setEventCost(totalCost);
     setRentalFee(rentalFeePerHour);
-
-    console.log("event cost: ", totalCost);
-    console.log("fee per hour: ", rentalFeePerHour);
-    console.log("duration hrs: ", durationHours);
   };
 
   return (
