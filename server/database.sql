@@ -17,8 +17,8 @@ CREATE TABLE events(
     event_staff VARCHAR(15),
     event_space TEXT,
     rental_fee NUMERIC,
-    not_allowed TEXT,
-    materials_toBring TEXT,
-    requirements TEXT
+    not_allowed TEXT[],
+    materials_toBring TEXT[],
+    requirements TEXT[]
     -- allowed TEXT,
 )`

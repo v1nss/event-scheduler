@@ -3,30 +3,25 @@ import { format, parseISO, isValid } from 'date-fns';
 
 
 const EventInfo = ({ event, onCancel }) => {
-    const [eventName, setEventName] = useState(event.event_name);
-    const [eventDescription, setEventDescription] = useState(event.event_description);
-    const [eventStart, setEventStart] = useState(event.event_start);
-    const [eventEnd, setEventEnd] = useState(event.event_end);
-    const [location, setLocation] = useState(event.location);
-    const [eventCost, setEventCost] = useState(event.event_cost);
-    // const [durationHours, setDurationHours] = useState(null);
-    const [companyName, setCompanyName] = useState(event.company_name);
-    const [eventProduct, setEventProduct] = useState(event.event_product);
-    // const [otherProduct, setOtherProduct] = useState('');
-    const [eventType, setEventType] = useState(event.event_type);
-    const [mobileNumber, setMobileNumber] = useState(event.mobile_number);
-    const [eventEmail, setEventEmail] = useState(event.event_email);
-    const [eventStaff, setEventStaff] = useState(event.event_staff);
-    const [eventSpace, setEventSpace] = useState(event.event_space);
-    const [rentalFee, setRentalFee] = useState(event.rental_fee);
-    const [notAllowed, setNotAllowed] = useState(event.not_allowed);
-    const [materialsToBring, setMaterialsToBring] = useState(event.materials_tobring);
-    const [requirements, setRequirements] = useState(event.requirements);
+    const [eventName] = useState(event.event_name);
+    const [eventDescription] = useState(event.event_description);
+    const [eventStart] = useState(event.event_start);
+    const [eventEnd] = useState(event.event_end);
+    const [location] = useState(event.location);
+    const [eventCost] = useState(event.event_cost);
+    const [companyName] = useState(event.company_name);
+    const [eventProduct] = useState(event.event_product);
+    const [eventType] = useState(event.event_type);
+    const [mobileNumber] = useState(event.mobile_number);
+    const [eventEmail] = useState(event.event_email);
+    const [eventStaff] = useState(event.event_staff);
+    const [eventSpace] = useState(event.event_space);
+    const [rentalFee] = useState(event.rental_fee);
+    const [notAllowed] = useState(event.not_allowed);
+    const [materialsToBring] = useState(event.materials_tobring);
+    const [requirements] = useState(event.requirements);
 
     const [eventEditPage, setEventEditPage] = useState(1)
-    const [currentNotAllowed, setCurrentNotAllowed] = useState('');
-    const [currentMaterial, setCurrentMaterial] = useState('');
-    const [currentRequirement, setCurrentRequirement] = useState('');
 
     const formatDate = (dateString) => {
       if (!dateString) {
@@ -47,16 +42,6 @@ const EventInfo = ({ event, onCancel }) => {
         console.error('Error parsing date:', dateString, error);
         return 'Invalid date';
       }
-    };
-
-    const formatData = (data) => {
-      if (Array.isArray(data)) {
-        return data.join(' | ');
-      } else if (typeof data === 'string') {
-        // Strip curly braces from a single string
-        return data.replace(/[\{\}]/g, '');
-      }
-      return data;
     };
     
     return (
@@ -238,7 +223,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Not Allowed</label>
                 <div className="flex items-center mb-2">
                   <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
-                    {formatData(notAllowed)}
+                    {notAllowed.join(" | ")}
                   </div>
                 </div>
               </div>
@@ -247,7 +232,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Materials to Bring</label>
                 <div className="flex items-center mb-2">
                   <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
-                    {formatData(materialsToBring)}
+                    {materialsToBring.join(" | ")}
                   </div>
                 </div>
               </div>
@@ -256,7 +241,7 @@ const EventInfo = ({ event, onCancel }) => {
                 <label className="block text-gray-700 font-medium text-left">Requirements</label>
                 <div className="flex items-center mb-2">
                   <div className="w-full rounded-md border-gray-300 shadow-sm px-2 py-2 bg-gray-100 h-24">
-                    {formatData(requirements)}
+                    {requirements.join(" | ")}
                   </div>
                 </div>
               </div>

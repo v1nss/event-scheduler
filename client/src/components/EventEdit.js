@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const EventEdit = ({ event, onCancel }) => {
     const [eventName, setEventName] = useState(event.event_name || '');
@@ -24,20 +24,11 @@ const EventEdit = ({ event, onCancel }) => {
     const [materialsToBring, setMaterialsToBring] = useState(event.materials_tobring || []);
     const [requirements, setRequirements] = useState(event.requirements || []);
 
-    const [notAllowedItems, setNotAllowedItems] = useState([]);
-
     const handleAddNotAllowed = () => {
-      // Append the new item to the notAllowed array
-      setNotAllowedItems([...notAllowed, currentNotAllowed]);
-      // Clear the input field
+      setNotAllowed([...notAllowed, currentNotAllowed]);
       setCurrentNotAllowed('');
     
     };
-
-  // const handleAddNotAllowed = () => {
-  //   setNotAllowed([...notAllowed, currentNotAllowed]);
-  //   setCurrentNotAllowed('');
-  // };
 
   const handleAddMaterial = () => {
     if (notAllowed.includes(currentMaterial)) {
@@ -45,7 +36,6 @@ const EventEdit = ({ event, onCancel }) => {
     } else {
       setMaterialsToBring([...materialsToBring, currentMaterial]);
       setCurrentMaterial('');
-      // console.log(materialsToBring)
     }
   };
 
@@ -76,7 +66,7 @@ const EventEdit = ({ event, onCancel }) => {
                 event_staff: eventStaff,
                 event_space: eventSpace,
                 rental_fee: rentalFee,  
-                not_allowed: notAllowedItems,
+                not_allowed: notAllowed,
                 materials_toBring: materialsToBring,
                 requirements: requirements
             };
@@ -254,7 +244,7 @@ const EventEdit = ({ event, onCancel }) => {
                                     className="w-2/3 ml-2 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                 />
                             </div>
-                            <div className="flex justify-end">
+                            <div className="flex justify-between">
                                 <button
                                     type="button"
                                     onClick={onCancel}
@@ -382,21 +372,21 @@ const EventEdit = ({ event, onCancel }) => {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => setNotAllowed([])}
+                                        onClick={() => setCurrentNotAllowed('')}
                                         className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
                                     >
                                         Clear
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => handleAddNotAllowed()}
+                                        onClick={handleAddNotAllowed}
                                         className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
                                     >
                                         Add
                                     </button>
                                 </div>
                                 <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
-                                  {notAllowedItems}
+                                  {notAllowed.join(' | ')}
                                 </div>
                             </div>
 
@@ -426,7 +416,7 @@ const EventEdit = ({ event, onCancel }) => {
                                     </button>
                                 </div>
                                 <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
-                                    {materialsToBring}
+                                    {materialsToBring.join(' | ')}
                                 </div>
                             </div>
 
@@ -456,7 +446,7 @@ const EventEdit = ({ event, onCancel }) => {
                                     </button>
                                 </div>
                                 <div className="mb-4 p-2 border border-gray-300 rounded-md h-24">
-                                    {requirements}
+                                    {requirements.join(' | ')}
                                 </div>
                             </div>
 
